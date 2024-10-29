@@ -51,8 +51,8 @@ local windowFocus = rules.rule(description='Move windows focus',
                                  shellCommand('down_arrow', mods=[mod], command='%(yabai)s -m window --focus south || %(yabai)s -m window --focus stack.last' % { yabai: yabai }),
                                  shellCommand('left_arrow', mods=[mod], command='%(yabai)s -m window --focus west || %(yabai)s -m window --focus stack.prev' % { yabai: yabai }),
                                  shellCommand('right_arrow', mods=[mod], command='%(yabai)s -m window --focus east || %(yabai)s -m window --focus stack.next' % { yabai: yabai }),
-                                 shellCommand(',', mods=[mod], command=windowNext),
-                                 shellCommand('.', mods=[mod], command=windowPrev),
+                                 shellCommand('comma', mods=[mod], command=windowNext),
+                                 shellCommand('period', mods=[mod], command=windowPrev),
                                ]);
 local windowMove = rules.rule(description='Move windows on display',
                               manipulators=[
@@ -73,6 +73,15 @@ local yabaiRestart = rules.rule(description='Yabai restart',
                                 manipulators=[
                                   yabaiCommand('c', mods=[mod, 'shift'], command='--restart-service'),
                                 ]);
+local lockScreen = rules.rule(description='lock screen',
+                              manipulators=[
+                                shellCommand('l', mods=[mod, 'control'], command="osascript -e 'tell application \"System Events\" to keystroke \"q\" using {command down,control down}'"),
+                              ]);
+local screenMove = rules.rule(description='move screen to other monitor',
+                              manipulators=[
+                                yabaiCommand('left_arrow', mods=[mod, 'shift', 'control'], command='-m space --display 1'),
+                                yabaiCommand('right_arrow', mods=[mod, 'shift', 'control'], command='-m space --display 2'),
+                              ]);
 
 local yabai = base.complexModification(title=makeName('Yabai rules'));
 
@@ -94,7 +103,9 @@ yabai.withRule(windowFocus) +
 yabai.withRule(windowMove) +
 yabai.withRule(toggleFullScreen) +
 yabai.withRule(windowClose) +
-yabai.withRule(yabaiRestart)
+yabai.withRule(yabaiRestart) +
+yabai.withRule(lockScreen) +
+yabai.withRule(screenMove)
 
 //ctrl - e : yabai -m space --layout bsp
 //ctrl - s : yabai -m space --layout stack
