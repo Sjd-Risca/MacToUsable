@@ -48,5 +48,61 @@ local custom_rules = rules.rule(description=makeName('Emulate Linux copy and pas
                                   for key in ['v', 'c', 'x', 'z', 't', 'c', 'n', 'w', 'l', 'p', 'o', 'e', 'r', 'h']
                                 ]));
 
-base.complexModification(title=makeName('Copy and paste linux way'),
-                         rules=[custom_rules])
+local textMovement = rules.rule(
+  description=makeName('Move around text'),
+  manipulators=[
+    rules.manipulator(
+      description='Home and end key remap',
+      from={ key_code: 'home' },
+      to=[{
+        key_code: 'left_arrow',
+        modifiers: ['command'],
+      }],
+      // conditions=[{
+      // }]
+    ),
+    rules.manipulator(
+      description='Home and end key remap',
+      from={ key_code: 'end' },
+      to=[{
+        key_code: 'right_arrow',
+        modifiers: ['command'],
+      }],
+    ),
+    rules.manipulator(
+      description='Ctl+left_arrow remap',
+      from={
+        key_code: 'left_arrow',
+        modifiers: {
+          mandatory: ['control'],
+          optional: ['shift'],
+        },
+      },
+      to=[{
+        key_code: 'left_arrow',
+        modifiers: ['left_option'],
+      }],
+    ),
+    rules.manipulator(
+      description='Ctl+right_arrow remap',
+      from={
+        key_code: 'right_arrow',
+        modifiers: {
+          mandatory: ['control'],
+          optional: ['shift'],
+        },
+      },
+      to=[{
+        key_code: 'right_arrow',
+        modifiers: ['left_option'],
+      }],
+    ),
+  ]
+);
+
+local aLaLinux = base.complexModification(title=makeName('Emulate Linux keybindings'),
+                                          rules=[custom_rules]);
+
+
+aLaLinux +
+aLaLinux.withRule(textMovement)
