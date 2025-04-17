@@ -17,7 +17,8 @@ local shellCommand(key, mods=[], command=null, descr='Send Yabai command') = rul
     key_code: key,
     modifiers: { mandatory: mods },
   },
-  to=[{ shell_command: '%s' % command }]
+  to=[{ shell_command: '%s' % command }],
+  conditions=apps.conditions.isNot.emulation
 );
 local yabaiCommand(key, mods=[], command=null, descr='Send Yabai command') = shellCommand(
   key, mods=mods, command='%s %s' % [yabai, command], descr=descr

@@ -28,18 +28,22 @@ local condition(appList, type='is') =
     terminal: appSelector('^com\\.apple\\.Terminal$'),
     alacritty: appSelector('^org\\.alacritty$'),
     kitty: appSelector('^net\\.kovidgoyal\\.kitty$'),
+    utm: appSelector('^com\\.utmapp\\.UTM$'),
   },
   type: {
     local app = $.apps,
     terminal: [app.terminal, app.alacritty, app.kitty],
+    emulation: [app.utm],
   },
   conditions: {
     local type = $.type,
     is: {
       terminal: [condition(type.terminal)],
+      emulation: [condition(type.emulation)],
     },
     isNot: {
       terminal: [condition(type.terminal, type='isNot')],
+      emulation: [condition(type.emulation, type='isNot')],
     },
   },
 }
