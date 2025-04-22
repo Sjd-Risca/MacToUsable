@@ -78,6 +78,10 @@ local lockScreen = rules.rule(description='lock screen',
                               manipulators=[
                                 shellCommand('l', mods=[mod, 'control'], command="osascript -e 'tell application \"System Events\" to keystroke \"q\" using {command down,control down}'"),
                               ]);
+local openTerminal = rules.rule(description='Open terminal session',
+                                manipulators=[
+                                  shellCommand('return_or_enter', mods=[mod], command='open -n -a kitty'),
+                                ]);
 local screenMove = rules.rule(description='move screen to other monitor',
                               manipulators=[
                                 yabaiCommand('left_arrow', mods=[mod, 'shift', 'control'], command='-m space --display 1'),
@@ -106,6 +110,7 @@ yabai.withRule(toggleFullScreen) +
 yabai.withRule(windowClose) +
 yabai.withRule(yabaiRestart) +
 yabai.withRule(lockScreen) +
+yabai.withRule(openTerminal) +
 yabai.withRule(screenMove)
 
 //ctrl - e : yabai -m space --layout bsp
